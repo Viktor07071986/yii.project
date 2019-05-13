@@ -61,6 +61,11 @@ $config = [
                 //'update/<id:\d+>' => 'yiirabbit/form/update',
                 //'view/<id:\d+>' => 'yiirabbit/form/view',
 				'<action>/<id:\d+>' => 'yiirabbit/form/<action>',
+                'rabbitmq' => 'yiirabbit/rabbit/index',
+                //'rabbitmq/reader' => 'yiirabbit/rabbit/reader',
+                //'rabbitmq/writer' => 'yiirabbit/rabbit/writer',
+                'rabbitmq/<action>' => 'yiirabbit/rabbit/<action>',
+
             ],
         ],
 

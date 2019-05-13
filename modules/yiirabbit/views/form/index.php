@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -16,10 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <? /* = $form->field($model, 'datetimesendform')->textInput() */ ?>
         <div class="form-group">
             <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?= Html::a('Посмотреть все', ['all'], ['class' => 'btn btn-success']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
 </div>
-<p>
-	<?= Html::a('Посмотреть все', ['all'], ['class' => 'btn btn-success']) ?>
-</p>
