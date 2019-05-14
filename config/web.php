@@ -70,6 +70,7 @@ $config = [
         ],
 
     ],
+
     'params' => $params,
 
     'params' => [
@@ -80,7 +81,6 @@ $config = [
         'rabbit_login' => 'guest',
         'rabbit_password' => 'guest'
     ],
-
 
 ];
 
