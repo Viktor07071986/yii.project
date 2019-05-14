@@ -60,7 +60,7 @@ $config = [
                 //'delete/<id:\d+>' => 'yiirabbit/form/delete',
                 //'update/<id:\d+>' => 'yiirabbit/form/update',
                 //'view/<id:\d+>' => 'yiirabbit/form/view',
-				'<action>/<id:\d+>' => 'yiirabbit/form/<action>',
+                '<action>/<id:\d+>' => 'yiirabbit/form/<action>',
                 'rabbitmq' => 'yiirabbit/rabbit/index',
                 //'rabbitmq/reader' => 'yiirabbit/rabbit/reader',
                 //'rabbitmq/writer' => 'yiirabbit/rabbit/writer',
@@ -71,6 +71,17 @@ $config = [
 
     ],
     'params' => $params,
+
+    'params' => [
+        'rabbit_queue' => 'RabbitMQQueue',
+        'rabbit_exchange' => 'amq.direct',
+        'rabbit_host' => 'localhost',
+        'rabbit_port' => 5672,
+        'rabbit_login' => 'guest',
+        'rabbit_password' => 'guest'
+    ],
+
+
 ];
 
 if (YII_ENV_DEV) {

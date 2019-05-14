@@ -18,9 +18,9 @@ class RabbitController extends Controller {
     public $exchange;
 
     public function init() {
-        $this->queue = "RabbitMQQueue";
-        $this->exchange = "amq.direct";
-        $this->connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+        $this->queue = Yii::$app->params['rabbit_queue'];
+        $this->exchange = Yii::$app->params['rabbit_exchange'];
+        $this->connection = new AMQPStreamConnection(Yii::$app->params['rabbit_host'], Yii::$app->params['rabbit_port'], Yii::$app->params['rabbit_login'], Yii::$app->params['rabbit_password']);
         $this->channel = $this->connection->channel();
         parent::init();
     }
@@ -71,8 +71,8 @@ class RabbitController extends Controller {
             $messageBody = json_encode($rabbitForm);
             $message = new AMQPMessage($messageBody, array('content_type' => 'text/plain', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT));
             $this->channel->basic_publish($message, $this->exchange);
-            //$this->channel->close();
-            //$this->connection->close();
+            $this->channel->close();
+            $this->connection->close();
             return $this->redirect('writer');
         }
         return $this->render("writer", compact('model'));
@@ -80,8 +80,8 @@ class RabbitController extends Controller {
 
     public function __destruct() {
         // TODO: Implement __destruct() method. not working!!!
-        $this->channel->close();
-        $this->connection->close();
+        //$this->channel->close();
+        //$this->connection->close();
     }
 
 }
