@@ -71,8 +71,8 @@ class RabbitController extends Controller {
             $messageBody = json_encode($rabbitForm);
             $message = new AMQPMessage($messageBody, array('content_type' => 'text/plain', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT));
             $this->channel->basic_publish($message, $this->exchange);
-            $this->channel->close();
-            $this->connection->close();
+            //$this->channel->close();
+            //$this->connection->close();
             return $this->redirect('writer');
         }
         return $this->render("writer", compact('model'));
@@ -80,8 +80,8 @@ class RabbitController extends Controller {
 
     public function __destruct() {
         // TODO: Implement __destruct() method. not working!!!
-        //$this->channel->close();
-        //$this->connection->close();
+        $this->channel->close();
+        $this->connection->close();
     }
 
 }
