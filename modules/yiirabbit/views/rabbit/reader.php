@@ -22,6 +22,10 @@ use yii\widgets\ActiveForm;
 </div>
 <p>
     <?php
-        echo $sample;
+        if (!empty($sample)) {
+            echo "<pre>"; var_dump($sample); echo "</pre>";
+        } elseif (!empty($end_sample)) {
+            echo "<pre>" . $end_sample . "</pre>";
+        }
     ?>
 </p>

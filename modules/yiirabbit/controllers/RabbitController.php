@@ -16,6 +16,8 @@ class RabbitController extends Controller {
     public $channel;
     public $queue;
     public $exchange;
+    public $sample=array();
+    public $end_sample;
 
     public function init() {
         $this->queue = Yii::$app->params['rabbit_queue'];
@@ -33,31 +35,20 @@ class RabbitController extends Controller {
         $model = new RabbitReaderForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $rabbitForm = Yii::$app->request->post()["RabbitReaderForm"]["count_queue_message"];
-            $sample = "<table border='1px solid black;' cellspacing='0' cellpadding='7' class='table table-striped'>
-                        <tr>
-                            <th>Логин</th>
-                            <th>Заголовок сообщения</th>
-                            <th>Сообщение</th>
-                            <th>Время</th>
-                        </tr>";
+            
             for ($i = 0; $i < $rabbitForm; $i++) {
                 $result = ($this->channel->basic_get('RabbitMQQueue', true, null)->body);
                 $rez = json_decode($result, true);
                 if (is_null($rez)) {
-                    $sample .= "<h4>Доступных сообщений для выгрузки больше нет!</h4>";
-                    break;
+                    $this->end_sample = "<h4>Доступных сообщений для выгрузки больше нет!</h4>";
                 } else {
-                    $sample .= "<tr>
-                        <td>".$rez["login"]."</td>
-                        <td>".$rez["title"]."</td>
-                        <td>".nl2br($rez["message"])."</td>
-                        <td>".$rez["date"]."</td>
-                    </tr>";
+                    $this->sample[$i] = $rez;
                 }
             }
-            $sample .= "</table>";
+
         }
-        return $this->render("reader", compact('model', 'sample'));
+
+        return $this->render("reader", ['model' => $model, 'sample' => $this->sample, 'end_sample' => $this->end_sample]);
     }
 
     public function actionWriter () {
@@ -73,7 +64,8 @@ class RabbitController extends Controller {
             $this->channel->basic_publish($message, $this->exchange);
             $this->channel->close();
             $this->connection->close();
-            return $this->redirect('writer');
+            //return $this->redirect('writer');
+            //return $this->refresh();
         }
         return $this->render("writer", compact('model'));
     }
